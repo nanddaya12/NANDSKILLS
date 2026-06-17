@@ -41,8 +41,14 @@ class PageRenderer extends Component
 
     protected function getDefaultLayout(): array
     {
-        $courses = Course::limit(3)->get()->toArray();
-        $posts = BlogPost::where('status', 'PUBLISHED')->limit(3)->get()->toArray();
+        $courses = [];
+        $posts = [];
+        try {
+            $courses = Course::limit(3)->get()->toArray();
+            $posts = BlogPost::where('status', 'PUBLISHED')->limit(3)->get()->toArray();
+        } catch (\Throwable $e) {
+            // Gracefully ignore database errors if connection/migration is not set up yet
+        }
 
         return [
             [

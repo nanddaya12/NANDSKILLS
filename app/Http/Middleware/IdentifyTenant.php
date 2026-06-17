@@ -18,18 +18,22 @@ class IdentifyTenant
         // Clean up base domain for matching
         $baseDomainClean = str_replace(['http://', 'https://'], '', $baseDomain);
 
-        if ($host !== $baseDomainClean && str_ends_with($host, '.' . $baseDomainClean)) {
-            // Subdomain routing (e.g. tenant1.localhost)
-            $subdomain = str_replace('.' . $baseDomainClean, '', $host);
-            $tenant = Tenant::where('subdomain', $subdomain)->first();
-        } else if ($host !== $baseDomainClean && $host !== '127.0.0.1' && $host !== 'localhost') {
-            // Custom domain routing (e.g. customdomain.com)
-            $tenant = Tenant::where('custom_domain', $host)->first();
-        }
+        try {
+            if ($host !== $baseDomainClean && str_ends_with($host, '.' . $baseDomainClean)) {
+                // Subdomain routing (e.g. tenant1.localhost)
+                $subdomain = str_replace('.' . $baseDomainClean, '', $host);
+                $tenant = Tenant::where('subdomain', $subdomain)->first();
+            } else if ($host !== $baseDomainClean && $host !== '127.0.0.1' && $host !== 'localhost') {
+                // Custom domain routing (e.g. customdomain.com)
+                $tenant = Tenant::where('custom_domain', $host)->first();
+            }
 
-        // Local dev fallback: 127.0.0.1 or localhost → use the first active tenant
-        if (!$tenant && in_array($host, ['127.0.0.1', 'localhost', $baseDomainClean])) {
-            $tenant = Tenant::where('status', 'ACTIVE')->first();
+            // Local dev fallback: 127.0.0.1 or localhost → use the first active tenant
+            if (!$tenant && in_array($host, ['127.0.0.1', 'localhost', $baseDomainClean])) {
+                $tenant = Tenant::where('status', 'ACTIVE')->first();
+            }
+        } catch (\Throwable $e) {
+            $tenant = null;
         }
 
         if ($tenant) {
