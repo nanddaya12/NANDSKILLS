@@ -1,0 +1,86 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Inter', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+/* ─── Global Light Theme Overrides ─────────────────────────────── */
+
+/* Force all form inputs, textareas, selects to light theme */
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+textarea,
+select {
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    border-color: #cbd5e1 !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):focus,
+textarea:focus,
+select:focus {
+    background-color: #ffffff !important;
+    color: #1e293b !important;
+    border-color: #3b82f6 !important;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Ensure card containers use white bg */
+.card-light {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 1rem;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,0.06);
+}
+
+/* Strip out dark glass morphism backgrounds */
+.bg-white\/5,
+.bg-slate-950\/40,
+.bg-slate-900 {
+    background-color: #ffffff !important;
+}
+
+/* Fix any leftover white text in light mode */
+.text-white:not(.btn-primary):not(button):not(.badge) {
+    color: #1e293b !important;
+}
+
+/* Light table rows */
+tbody tr:hover {
+    background-color: #eff6ff !important;
+}
+
+/* Blue primary buttons stay blue */
+button.bg-blue-600,
+a.bg-blue-600 {
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+}
+
+button.bg-blue-600:hover,
+a.bg-blue-600:hover {
+    background-color: #1d4ed8 !important;
+}
+
+/* Smooth scrollbar for sidebar */
+nav::-webkit-scrollbar {
+    width: 4px;
+}
+nav::-webkit-scrollbar-track {
+    background: #f8fafc;
+}
+nav::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}

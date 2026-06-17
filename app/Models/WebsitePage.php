@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use App\Traits\HasTenantScope;
+
+class WebsitePage extends Model
+{
+    use HasUuids, HasTenantScope;
+
+    protected $fillable = [
+        'tenant_id',
+        'title',
+        'slug',
+        'content',
+        'status', // DRAFT, PUBLISHED, ARCHIVED
+        'is_system',
+        'seo_title',
+        'seo_description',
+        'og_image',
+        'canonical_url',
+    ];
+
+    protected $casts = [
+        'content' => 'array',
+        'is_system' => 'boolean',
+    ];
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
+    }
+}
