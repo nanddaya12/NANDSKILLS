@@ -28,8 +28,15 @@ class IdentifyTenant
                 $tenant = Tenant::where('custom_domain', $host)->first();
             }
 
-            // Local dev fallback: 127.0.0.1 or localhost → use the first active tenant
-            if (!$tenant && in_array($host, ['127.0.0.1', 'localhost', $baseDomainClean])) {
+            // Vercel auto-resolution (matches nandskills.vercel.app and preview domains)
+            if (!$tenant && str_contains($host, 'vercel.app')) {
+                $subdomainPart = explode('.', $host)[0];
+                $subdomain = explode('-', $subdomainPart)[0];
+                $tenant = Tenant::where('subdomain', $subdomain)->first();
+            }
+
+            // General fallback: default to the first active tenant
+            if (!$tenant) {
                 $tenant = Tenant::where('status', 'ACTIVE')->first();
             }
         } catch (\Throwable $e) {
