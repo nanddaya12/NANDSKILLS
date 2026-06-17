@@ -11,6 +11,10 @@
       "dest": "/build/$1"
     },
     {
+      "src": "/livewire/(.*)",
+      "dest": "/api/index.php"
+    },
+    {
       "src": "/(.*)\\.(?:css|js|png|jpg|jpeg|gif|svg|ico|ttf|woff|woff2|eot|otf|webp|avif|txt)$",
       "dest": "/$1.$2"
     },
